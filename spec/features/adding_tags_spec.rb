@@ -1,3 +1,6 @@
+require './app/models/link'
+require 'spec_helper'
+
 feature 'Adding Tags' do
 
   scenario 'I can add a single tag to a new link' do
@@ -8,8 +11,8 @@ feature 'Adding Tags' do
     fill_in 'tag',  with: 'education' # for now, let's input a single tag value.
    #later on we can go for multiple tags.
 
-   click_button 'Create link'
-   link = Link.first
-   expect(link.tag).to include('education')
+    click_button 'Create link'
+    link = Link.first
+    expect(link.tag).to include('education')
   end
 end

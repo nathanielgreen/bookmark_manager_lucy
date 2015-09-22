@@ -1,6 +1,6 @@
 # This class corresponds to a table in the database
 # We can use it to manipulate the data
-require './app/data_mapper_setup'
+# require './app/data_mapper_setup'
 
 class Link
 
@@ -12,5 +12,6 @@ class Link
   property :title, String
   property :url, String
   property :tag, String
+  has n, :tags, through: Resource
 
 end

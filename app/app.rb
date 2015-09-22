@@ -3,10 +3,6 @@ require_relative 'data_mapper_setup'
 
 class BookmarkManager < Sinatra::Base
 
-  # get '/' do
-  #   erb :index
-  # end
-
   get '/links' do
     @links = Link.all
     erb :'links/index'
@@ -17,16 +13,9 @@ class BookmarkManager < Sinatra::Base
   end
 
   post '/links' do
-    # session[:url] = params[:url]
-    # session[:title] = params[:title]
     link = Link.create(url: params[:url], title: params[:title], tag: params[:tag])
-    link.save
     redirect '/links'
   end
-
-  # get '/links/' do
-  #
-  # end
 
 
     # start the server if ruby file executed directly
