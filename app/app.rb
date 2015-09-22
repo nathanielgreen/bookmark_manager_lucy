@@ -1,6 +1,6 @@
 require 'sinatra/base'
 
-class Link < Sinatra::Base
+class BookmarkManager < Sinatra::Base
   # ... app code here ...
 
   get '/' do
