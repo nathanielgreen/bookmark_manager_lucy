@@ -5,12 +5,17 @@
   </head>
 
   <body>
+
     <% if current_user %>
       Welcome, <%= current_user.email %>
+    <% else %>
+      <div id='no_email'><%= flash[:no_email] %></div>
     <% end %>
+
     <% if flash[:notice] %>
       <div id='notice'><%= flash[:notice] %></div>
     <% end %>
     <%= yield %>
+
   </body>
 </html>
