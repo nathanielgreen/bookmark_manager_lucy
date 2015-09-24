@@ -53,8 +53,8 @@ class BookmarkManager < Sinatra::Base
       session[:user_id] = @user.id
       redirect to('/')
     elsif @user.email.empty?
-      flash.now[:no_email] = "You must enter an email address."
       flash.now[:errors] = @user.errors.full_messages
+      flash.now[:no_email] = "You must enter an email address."
     else
       flash.now[:errors] = @user.errors.full_messages
     end
