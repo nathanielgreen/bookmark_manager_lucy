@@ -1,5 +1,6 @@
 require './app/data_mapper_setup'
 require 'spec_helper'
+require_relative '../factories/user'
 
 feature 'User sign up' do
 
@@ -18,7 +19,7 @@ feature 'User sign up' do
     expect(User.first.email).to eq('alice@example.com')
   end
 
-  def sign_up(email: 'alice@example.com',
+  def sign_up(email:    'alice@example.com',
               password: 'oranges!')
     visit '/users/new'
     expect(page.status_code).to eq(200)
@@ -29,9 +30,7 @@ feature 'User sign up' do
 
 
   scenario 'requires a matching confirmation password' do
-    # again it's questionable whether we should be testing the model at this
-    # level.  We are mixing integration tests with feature tests.
-    # However, it's convenient for our purposes.
+
     expect { sign_up(password_confirmation: 'wrong') }.not_to change(User, :count)
   end
 
@@ -48,13 +47,28 @@ feature 'User sign up' do
   scenario 'with a password that does not match' do
     expect { sign_up(password_confirmation: 'wrong') }.not_to change(User, :count)
     expect(current_path).to eq('/users') # current_path is a helper provided by Capybara
-    expect(page).to have_content 'Password and confirmation password do not match'
+    expect(page).to have_content 'Password does not match the confirmation'
   end
 
   scenario "user can't sign up without entering an email" do
     expect { sign_up(email: nil) }.not_to change(User, :count)
     expect(current_path).to eq('/users')
     expect(page).to have_content 'You must enter an email address.'
+  end
+
+  def sign_up_as(user)
+    visit 'users/new'
+    fill_in :email,    with: user.email
+    fill_in :password, with: user.password
+    fill_in :password_confirmation, with: user.password_confirmation
+    click_button 'Sign up'
+  end
+
+  scenario 'I cannot sign up with an existing email' do
+    user = create :user
+    sign_up_as(user)
+    expect { sign_up_as(user) }.to change(User, :count).by (0)
+    expect(page).to have_content('Email is already taken')
   end
 
 

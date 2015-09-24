@@ -10,6 +10,7 @@ group :test do
  gem 'bcrypt'
  gem 'capybara'
  gem 'database_cleaner'
+ gem 'factory_girl'
  gem 'rspec'
  gem 'rspec-sinatra'
  gem 'sinatra-flash'

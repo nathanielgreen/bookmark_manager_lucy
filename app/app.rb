@@ -47,15 +47,16 @@ class BookmarkManager < Sinatra::Base
 
   post '/users' do
     @user = User.create(email:                 params[:email],
-                       password:              params[:password],
-                       password_confirmation: params[:password_confirmation])
+                        password:              params[:password],
+                        password_confirmation: params[:password_confirmation])
     if @user.save
       session[:user_id] = @user.id
       redirect to('/')
     elsif @user.email.empty?
       flash.now[:no_email] = "You must enter an email address."
+      flash.now[:errors] = @user.errors.full_messages
     else
-      flash.now[:notice] = "Password and confirmation password do not match"
+      flash.now[:errors] = @user.errors.full_messages
     end
       erb :'users/new'
   end
@@ -63,6 +64,11 @@ class BookmarkManager < Sinatra::Base
   helpers do
     def current_user
       @current_user ||= User.get(session[:user_id])
+    end
+    def full_messages
+      "You must enter an email address"
+      "Password does not match the confirmation"
+      "Email is already taken"
     end
   end
 
